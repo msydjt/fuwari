@@ -51,7 +51,7 @@ export const siteConfig: SiteConfig = {
 		size: "cover", // Background size: 'cover', 'contain', 'auto'
 		repeat: "no-repeat", // Background repeat: 'no-repeat', 'repeat', 'repeat-x', 'repeat-y'
 		attachment: "fixed", // Background attachment: 'fixed', 'scroll', 'local'
-		opacity: 1, // Background opacity (0-1)
+		opacity: 0.2, // Background opacity (0-1)
 	},
 	toc: {
 		enable: true, // Display the table of contents on the right side of the post
@@ -86,61 +86,23 @@ export const navBarConfig: NavBarConfig = {
 			icon: "material-symbols:group-outline-rounded",
 		},
 		{
-			name: "赞助",
-			url: "/sponsors/",
-			external: false,
-			icon: "material-symbols:volunteer-activism-outline-rounded",
-		},
-		{
 			name: "工具",
 			url: "/tools/",
 			external: false,
 			icon: "material-symbols:build-outline-rounded",
 		},
-		{
-			name: "统计",
-			url: `https://u.${customDomain}/share/CdkXbGgZr6ECKOyK`,
-			external: true,
-			icon: "material-symbols:table-chart",
-		},
-		{
-			name: "论坛",
-			url: "/forum/",
-			external: false,
-			icon: "material-symbols:forum-outline-rounded",
-		},
 	],
 };
 
 export const profileConfig: ProfileConfig = {
-	avatar: "https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&spec=0", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
-	name: "二叉树树",
+	avatar: "https://r2.msydjt.com/IMG_2651.png", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+	name: "MSYDJT",
 	bio: "Protect What You Love.",
 	links: [
 		{
-			name: "QQ",
-			icon: "qq", // Local icon
-			url: "https://qm.qq.com/q/FWqOHlwL2m",
-		},
-		{
-			name: "Telegram",
-			icon: "telegram", // Local icon
-			url: "https://t.me/+_07DERp7k1ljYTc1",
-		},
-		{
-			name: "Bilibli",
-			icon: "bilibili", // Local icon
-			url: "https://space.bilibili.com/325903362",
-		},
-		{
 			name: "GitHub",
 			icon: "github", // Local icon
-			url: "https://github.com/afoim",
-		},
-		{
-			name: "Folo",
-			icon: "folo", // Local icon
-			url: "https://app.folo.is/share/feeds/245004133358075904",
+			url: "https://github.com/MSYDJT",
 		},
 	],
 };
@@ -158,7 +120,7 @@ export const imageFallbackConfig: ImageFallbackConfig = {
 };
 
 export const umamiConfig: UmamiConfig = {
-	enable: true,
+	enable: false,
 	baseUrl: `https://u.${customDomain}`,
 	shareId: "CdkXbGgZr6ECKOyK",
 	timezone: "Asia/Shanghai",
@@ -166,7 +128,7 @@ export const umamiConfig: UmamiConfig = {
 
 export const gitHubEditConfig: GitHubEditConfig = {
 	enable: true,
-	baseUrl: "https://github.com/afoim/fuwari/blob/main/src/content/posts",
+	baseUrl: "https://github.com/MSYDJT/fuwari/blob/main/src/content/posts",
 };
 
 // todoConfig removed from here
