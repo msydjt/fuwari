@@ -14,7 +14,7 @@ const customDomain = "blog.msydjt.com";
 export const siteConfig: SiteConfig = {
 	customDomain,
 	title: "MSYDJT'Blog",
-	subtitle: "门上一点就通",
+	subtitle: "门上一点就通的博客",
 	description:
 		"一个专注于IT/互联网技术分享与实践的个人技术博客，在这里你可以找到众多前沿技术的分享与实践经验。",
 
