@@ -135,34 +135,3 @@ const isForumRoute =
         {!siteConfig.toc.enable && <div id="toc"></div>}
     </div>
 </div>
-
-<script is:inline>
-    // Google Ads Anchor Ad support
-    function initGoogleAnchorAdSupport() {
-        const updateNavbarOffset = () => {
-            const bodyPaddingTop = document.body.style.paddingTop;
-            if (bodyPaddingTop && bodyPaddingTop !== '0px') {
-                document.documentElement.style.setProperty('--navbar-offset', bodyPaddingTop);
-            } else {
-                document.documentElement.style.removeProperty('--navbar-offset');
-            }
-        };
-
-        const existingObserver = window.__googleAnchorAdSupportObserver;
-        if (existingObserver) {
-            existingObserver.disconnect();
-        }
-
-        const observer = new MutationObserver(updateNavbarOffset);
-        observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
-        window.__googleAnchorAdSupportObserver = observer;
-        updateNavbarOffset();
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initGoogleAnchorAdSupport, { once: true });
-    } else {
-        initGoogleAnchorAdSupport();
-    }
-</script>
-</Layout>
