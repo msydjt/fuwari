@@ -41,10 +41,11 @@ const hasBannerLink = !!siteConfig.banner.credit.url;
 const mainPanelTop = siteConfig.banner.enable
 	? `calc(${BANNER_HEIGHT}vh - ${MAIN_PANEL_OVERLAPS_BANNER_HEIGHT}rem - 4.5rem)`
 	: "1rem";
-const forumBasePath = url("/forum/");
-const isForumRoute =
-	pathsEqual(Astro.url.pathname, forumBasePath) ||
-	Astro.url.pathname.startsWith(forumBasePath);
+const forumBasePath = url("/forum/");  
+const isForumRoute = Astro.url && (  
+    pathsEqual(Astro.url.pathname, forumBasePath) ||  
+    Astro.url.pathname.startsWith(forumBasePath)  
+);
 ---
 
 <Layout title={title} banner={banner} description={description} lang={lang} setOGTypeArticle={setOGTypeArticle}>
