@@ -9,7 +9,7 @@ import type {
 } from "./types/config";
 import { LinkPreset } from "./types/config";
 
-const customDomain = "blog.msydjt.com";
+const customDomain = "msydjt.com";
 
 export const siteConfig: SiteConfig = {
 	customDomain,
@@ -60,12 +60,12 @@ export const siteConfig: SiteConfig = {
 	favicon: [
 		// Leave this array empty to use the default favicon
 		{
-			src: "https://r2.msydjt.com/IMG_2651.png", // Path of the favicon, relative to the /public directory
+			src: "https://cnb.cool/MSYDJT/fuwari/-/git/raw/main/public/files/img/IMG_2651-768x769-1.png", // Path of the favicon, relative to the /public directory
 			//   sizes: '32x32',              // (Optional) Size of the favicon, set only if you have favicons of different sizes
 		},
 	],
 	officialSites: [
-		{ url: "https://acofork.com", alias: "CN" },
+		{ url: "https://msydjt.com", alias: "CN" },
 		{ url: `https://${customDomain}`, alias: "Global" },
 	],
 	server: [
@@ -95,7 +95,7 @@ export const navBarConfig: NavBarConfig = {
 };
 
 export const profileConfig: ProfileConfig = {
-	avatar: "https://r2.msydjt.com/IMG_2651.png", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+	avatar: "https://cnb.cool/MSYDJT/fuwari/-/git/raw/main/public/files/img/IMG_2651-768x769-1.png", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 	name: "MSYDJT",
 	bio: "Protect What You Love.",
 	links: [
