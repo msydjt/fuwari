@@ -40,7 +40,8 @@ import { url } from "../utils/url-utils";
     </a>
     <br>
 
-    <span id="site-runtime" class="text-white/30 text-xs"></span>
+    <!-- ✅ 关键：沿用原来的小字样式 -->
+    <span id="site-runtime" class="transition text-white/30 text-xs"></span>
 
   </div>
 </div>
@@ -62,8 +63,8 @@ import { url } from "../utils/url-utils";
     const minutes = Math.floor(diff / 60);
     const seconds = diff % 60;
 
-    const text = `运行时间 ${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
-    document.getElementById("site-runtime").innerText = text;
+    document.getElementById("site-runtime").innerText =
+      `运行时间 ${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
   }
 
   updateRuntime();
