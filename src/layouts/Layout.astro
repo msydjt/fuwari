@@ -16,18 +16,14 @@ import ConfigCarrier from "@components/ConfigCarrier.astro";
 import GlobalToaster from "@components/GlobalToaster.svelte";
 import BodyThirdPartyScripts from "@components/layout/BodyThirdPartyScripts.astro";
 import DashLoaderScript from "@components/layout/DashLoaderScript.astro";
-import LiquidGlassFilter from "@components/layout/LiquidGlassFilter.astro";
 import NewPostNotification from "@components/widget/NewPostNotification.astro";
 import {
-  BANNER_HEIGHT,
-  BANNER_HEIGHT_EXTEND,
-  BANNER_HEIGHT_HOME,
   DARK_MODE,
   PAGE_WIDTH,
 } from "../constants/constants";
 import { defaultFavicons } from "../constants/icon";
 import type { Favicon } from "../types/config";
-import { url, pathsEqual } from "../utils/url-utils";
+import { url } from "../utils/url-utils";
 
 interface Props {
   title?: string;
@@ -37,22 +33,39 @@ interface Props {
   setOGTypeArticle?: boolean;
 }
 
-let { title, banner, description, lang, setOGTypeArticle } = Astro.props;
+let {
+  title,
+  banner,
+  description,
+  lang,
+  setOGTypeArticle = false,
+} = Astro.props;
 
-const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
 const isForumRoute = Astro.url.pathname.startsWith(url("/forum/"));
 const showNewPostNotification = !isForumRoute;
 
 const configHue = siteConfig.themeColor.hue;
 
-if (!banner || banner.trim() === "") {
-  banner = siteConfig.banner.src;
-}
-banner = siteConfig.banner.src;
+/**
+ * 默认背景图
+ * 如果某个页面传了 banner，则优先使用页面传入的 banner。
+ * 如果没有传 banner，则使用 siteConfig.banner.src。
+ * 如果 siteConfig.banner.src 为空，则使用下面这张默认图。
+ */
+const DEFAULT_BACKGROUND_IMAGE =
+  "https://cnb.cool/MSYDJT/fuwari/-/git/raw/main/public/files/img/%E3%80%90%E5%93%B2%E9%A3%8E%E5%A3%81%E7%BA%B8%E3%80%91ins%E9%A3%8E-%E5%92%96%E5%95%A1%E5%BA%97-2048x1280-1.jpg";
 
-const enableBanner = siteConfig.banner.enable;
+const rawBackgroundImage =
+  banner?.trim() ||
+  siteConfig.banner.src?.trim() ||
+  DEFAULT_BACKGROUND_IMAGE;
+
+const backgroundImage = rawBackgroundImage.startsWith("/")
+  ? url(rawBackgroundImage)
+  : rawBackgroundImage;
 
 let pageTitle: string;
+
 if (title) {
   pageTitle = `${title} - ${siteConfig.title}`;
 } else {
@@ -71,6 +84,7 @@ const favicons: Favicon[] =
 if (!lang) {
   lang = `${siteConfig.lang}`;
 }
+
 const siteLang = lang.replace("_", "-");
 ---
 
@@ -79,63 +93,82 @@ const siteLang = lang.replace("_", "-");
 <head>
   <meta name="baidu-site-verification" content="codeva-R9gBNkx4jK" />
 
-  <!-- ✅ 核心：移动端适配 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- 移动端适配 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
   <meta charset="UTF-8" />
   <title>{pageTitle}</title>
 
-  <meta name="description" content={description}>
-  <meta name="author" content={profileConfig.name}>
+  <meta name="description" content={description} />
+  <meta name="author" content={profileConfig.name} />
 
-  <link rel="canonical" href={Astro.url}>
+  <meta property="og:type" content={setOGTypeArticle ? "article" : "website"} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={description} />
+
+  <link rel="canonical" href={Astro.url} />
 
   <!-- favicon -->
-  {favicons.map(favicon => (
-    <link rel="icon"
-      href={favicon.src.startsWith('/') ? url(favicon.src) : favicon.src}
+  {favicons.map((favicon) => (
+    <link
+      rel="icon"
+      href={favicon.src.startsWith("/") ? url(favicon.src) : favicon.src}
       sizes={favicon.sizes}
     />
   ))}
 
-  <!-- ✅ 主题初始化 -->
-  <script is:inline define:vars={{DARK_MODE, configHue}}>
-    document.documentElement.classList.add('dark');
-    localStorage.setItem('theme', DARK_MODE);
-    document.documentElement.style.setProperty('--hue', configHue);
+  <!-- 主题初始化 -->
+  <script is:inline define:vars={{ DARK_MODE, configHue }}>
+    document.documentElement.classList.add("dark");
+    localStorage.setItem("theme", DARK_MODE);
+    document.documentElement.style.setProperty("--hue", configHue);
   </script>
 
-  <!-- ✅ 修复 vh 问题 -->
+  <!-- 修复移动端 100vh 问题 -->
   <script is:inline>
     function setVH() {
       document.documentElement.style.setProperty(
-        '--vh',
+        "--vh",
         `${window.innerHeight * 0.01}px`
       );
     }
+
     setVH();
-    window.addEventListener('resize', setVH);
+    window.addEventListener("resize", setVH);
   </script>
 
   <!-- KaTeX -->
-  <link rel="stylesheet"
+  <link
+    rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
     media="print"
-    onload="this.media='all'" />
+    onload="this.media='all'"
+  />
 
-  <!-- 第三方统计脚本（添加位置） -->
-  <script defer src="https://u.msydjt.com/script.js" data-website-id="43d86ce5-e191-4620-9bda-dbfd32e5a0b1"></script>
+  <!-- 第三方统计脚本 -->
+  <script
+    defer
+    src="https://u.msydjt.com/script.js"
+    data-website-id="43d86ce5-e191-4620-9bda-dbfd32e5a0b1"
+  ></script>
 </head>
 
 <body class="min-h-screen">
-
   <BodyThirdPartyScripts />
 
-  <!-- ✅ 背景 -->
-  <div id="bg-box"></div>
+  <!-- 背景图 -->
+  <div id="bg-box" aria-hidden="true">
+    <img
+      src={backgroundImage}
+      alt=""
+      loading="eager"
+      decoding="async"
+    />
+  </div>
 
   <ConfigCarrier />
   <GlobalToaster client:only="svelte" />
+
   {showNewPostNotification && <NewPostNotification />}
 
   <slot />
@@ -144,40 +177,81 @@ const siteLang = lang.replace("_", "-");
 </body>
 </html>
 
-<!-- ✅ 样式优化 -->
 <style is:global define:vars={{
-  'page-width': `${PAGE_WIDTH}rem`,
+  "page-width": `${PAGE_WIDTH}rem`,
 }}>
 :root {
-  --bg-src: url("https://cnb.cool/MSYDJT/fuwari/-/git/raw/main/public/files/img/%E3%80%90%E5%93%B2%E9%A3%8E%E5%A3%81%E7%BA%B8%E3%80%91ins%E9%A3%8E-%E5%92%96%E5%95%A1%E5%BA%97-2048x1280-1.jpg");
   --bg-opacity: 0.3;
 }
 
-/* 背景 */
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+  overflow-x: hidden;
+
+  /*
+    关键：
+    isolation 可以让 z-index: -1 的背景层稳定地位于页面内容后方，
+    同时避免它跑到 html 背景后面导致不可见。
+  */
+  isolation: isolate;
+}
+
+/*
+  背景层
+
+  这里不再使用 background-attachment: fixed。
+  电脑端缩放异常主要就是 fixed + cover 组合造成的视觉问题。
+*/
 #bg-box {
   position: fixed;
   inset: 0;
-  background-image: var(--bg-src);
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-
-  /* ❌ 移动端禁用 fixed 视差 */
-  background-attachment: scroll;
-
-  opacity: var(--bg-opacity);
   z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
 }
 
-/* 桌面端才开启 fixed */
-@media (min-width: 768px) {
-  #bg-box {
-    background-attachment: fixed;
+/*
+  使用 img + object-fit，比 background-attachment: fixed 更稳定。
+*/
+#bg-box img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+
+  object-fit: cover;
+  object-position: center center;
+
+  opacity: var(--bg-opacity);
+
+  pointer-events: none;
+  user-select: none;
+
+  transform: translateZ(0);
+}
+
+/*
+  桌面端稍微向上对齐，通常比完全居中更自然，
+  可以减少“图片被放大后主体跑偏”的感觉。
+*/
+@media (min-width: 1024px) {
+  #bg-box img {
+    object-position: center top;
   }
 }
 
-/* ✅ 修复 vh */
+/*
+  如果你用到了 full-height 类，则继续保留。
+*/
 .full-height {
-  height: calc(var(--vh) * 100);
+  height: calc(var(--vh, 1vh) * 100);
 }
 </style>
